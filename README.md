@@ -160,7 +160,7 @@ endmodule
 ```
 
 Los resultados de la simulación se pueden visualizar en la siguiente imagen.
-![Testbench UART](https://github.com/EL3313/laboratorio4-grupo-6/blob/main/UART/Data%20register%20tb.png)
+![Testbench UART](https://github.com/KRSahalie/Laboratorio3-TDD/blob/main/Ejercicio%202/Imagenes/Data%20register%20tb.png)
 
 ### 2. Registro de Control:
 ```SystemVerilog
@@ -302,7 +302,7 @@ endmodule
 ```
 
 Los resultados de la simulación se pueden visualizar en la siguiente imagen.
-![Testbench UART](https://github.com/EL3313/laboratorio4-grupo-6/blob/main/UART/Control%20Register%20tb.png)
+![Testbench UART](https://github.com/KRSahalie/Laboratorio3-TDD/blob/main/Ejercicio%202/Imagenes/Control%20Register%20tb.png)
 
 ## B. Módulo UART tx  
 
@@ -803,17 +803,17 @@ Seguidamente se prueba la transmisión:
 
 Se conecta la FPGA y se programa con el bitstream creado. Se procede a enviar la señal con los switches correspondiendte al ASCII A:
 
-![Envío de datos desde la FPGA](https://github.com/EL3313/laboratorio3-grupo-6/blob/main/Ejercicio2/Imagenes/TX.jpeg)
+![Envío de datos desde la FPGA](https://github.com/KRSahalie/Laboratorio3-TDD/Ejercicio 2/Imagenes/TX.jpeg)
 
-![Dato enviado desde la FPGA a la terminal Tera Term](https://github.com/EL3313/laboratorio3-grupo-6/blob/main/Ejercicio2/Imagenes/Serial%20TX.png)
+![Dato enviado desde la FPGA a la terminal Tera Term](https://github.com/KRSahalie/Laboratorio3-TDD/Ejercicio 2/Imagenes/Serial TX.png)
 
 Por último se prueba la recepción en la FPGA:
 
 Se procede a enviar la señal con el teclado, la tecla es la B y debería verse el equivalente con los Leds en la FPGA:
 
-![Envío de datos desde el Serial](https://github.com/EL3313/laboratorio3-grupo-6/blob/main/Ejercicio2/Imagenes/Serial%20RX.png)
+![Envío de datos desde el Serial](https://github.com/KRSahalie/Laboratorio3-TDD/Ejercicio 2/Imagenes/Serial RX.png)
 
-![Dato recibido en la FPGA](https://github.com/EL3313/laboratorio3-grupo-6/blob/main/Ejercicio2/Imagenes/RX.jpeg)
+![Dato recibido en la FPGA](https://github.com/KRSahalie/Laboratorio3-TDD/Ejercicio 2/Imagenes/RX.jpeg)
 
 De esta manera se puede verificar que el envío y la recepción de datos funcionan correctamente. 
 
