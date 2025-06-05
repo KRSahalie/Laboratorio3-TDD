@@ -1,4 +1,4 @@
-# Ejercicio: Interfaz UART
+# Ejercicio 2: Interfaz UART
 
 La solución al ejercicio consiste en implementar una interfaz UART, dos registros de datos, un registro de control y una FSM que se encargue de la entrada y recepción de datos a parte de las propias de la interfaz.
 
