@@ -1,3 +1,11 @@
+# Abreviaturas y definiciones
+- **FPGA**: Field Programmable Gate Arrays
+
+# Referencias
+[0] David Harris y Sarah Harris. *Digital Design and Computer Architecture. RISC-V Edition.* Morgan Kaufmann, 2022. ISBN: 978-0-12-820064-3
+
+[1] Features, 1., & Description, 3. (s/f). SNx4HC14 Hex Inverters with Schmitt-Trigger Inputs. Www.ti.com. https://www.ti.com/lit/ds/symlink/sn74hc14.pdf?ts=1709130609427&ref_url=https%253A%252F%252Fwww.google.com%252F
+
 # Ejercicio 2: Interfaz UART
 
 La solución al ejercicio consiste en implementar una interfaz UART, dos registros de datos, un registro de control y una FSM que se encargue de la entrada y recepción de datos a parte de las propias de la interfaz.
