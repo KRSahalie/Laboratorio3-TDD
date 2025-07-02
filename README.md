@@ -6,6 +6,143 @@
 
 [1] Features, 1., & Description, 3. (s/f). SNx4HC14 Hex Inverters with Schmitt-Trigger Inputs. Www.ti.com. https://www.ti.com/lit/ds/symlink/sn74hc14.pdf?ts=1709130609427&ref_url=https%253A%252F%252Fwww.google.com%252F
 
+# Ejercicio 1: FIFO
+La solución al ejercicio consiste en implementar una FIFO a partir del IP Generator, con un ancho de palabra de 8 bits y un largo de 512 palabras. Además se activan señales de salida para indicar la FIFO llena, FIFO vacía y cantidad de palabras presentes.
+
+## Módulos utilizados y descripción de su funcionamiento:
+
+### A. Módulos utilizados (generados) 
+### 1. IP de FIFO (fifo_generator)
+Esta FIFO (First In, First Out) de 8 bits y 512 palabras, generada mediante un IP core, es un bloque de memoria temporal que permite almacenar datos de manera ordenada: el primer dato en entrar es el primero en salir.
+
+```SystemVerilog
+  // Instancia FIFO
+  fifo_generator fifo_inst (
+      .clk(clk_16MHz),
+      .srst(srst),
+      .din(din),
+      .wr_en(wr_en),
+      .rd_en(rd_en),
+      .dout(dout),
+      .full(full),
+      .empty(empty),
+      .data_count(data_count)
+  );
+```
+
+#### Señales:
+- **clk:** Señal de reloj para la operación de la FIFO
+- **srst:** Reset síncrono. Pone la FIFO en estado inicial
+- **din:** Entrada de datos de 8 bits
+- **wr_en:** Habilita escritura
+- **rd_en:** Habilita lectura
+- **dout::** Salida de datos de 8 bits
+- **full:** Indica que la FIFO está llena
+- **empty:** Indica que la FIFO está vacía
+- **data_count:** Número de palabras actualmente almacenadas en la FIFO (monitor de ocupación)
+
+
+### 2. PLL Reductor de Frecuencia (clk_wiz_0)
+Este módulo utiliza un PLL (Phase-Locked Loop) generado mediante IP para reducir la frecuencia de un reloj de entrada de 100 MHz a 16 MHz.
+
+```SystemVerilog
+//Clock instance
+clk_wiz_0 clk_pll    (
+    // Clock out ports
+    .clk_16MHz(clk_16MHz),     // output clk_out1
+    .reset(srst), // input reset
+    .clk_100MHz(clk_100MHz)
+    );      // input clk_in1
+```
+#### Señales:
+- **clk_100MHz:** Entrada del reloj principal de 100 MHz
+- **clk_16MHz:** Salida del reloj generado por el PLL a 16 MHz
+- **reset:** Señal de reinicio del PLL, normalmente asociada al reset general del sistema
+
+### B. Testbench
+
+```SystemVerilog
+`timescale 1ns/1ps
+
+module tb_fifo;
+
+  reg clk_16MHz;
+  reg srst;
+  reg wr_en;
+  reg rd_en;
+  reg [7:0] din;
+  wire [7:0] dout;
+  wire full;
+  wire empty;
+  wire [8:0] data_count;
+
+  // Instancia del PLL (simulada aquí con reloj generado)
+  initial clk_16MHz = 0;
+  always #31.25 clk_16MHz = ~clk_16MHz; // 16 MHz => periodo 62.5ns
+
+  // Instancia FIFO
+  fifo_generator fifo_inst (
+      .clk(clk_16MHz),
+      .srst(srst),
+      .din(din),
+      .wr_en(wr_en),
+      .rd_en(rd_en),
+      .dout(dout),
+      .full(full),
+      .empty(empty),
+      .data_count(data_count)
+  );
+
+  initial begin
+    // Reset inicial
+    srst = 1;
+    wr_en = 0;
+    rd_en = 0;
+    din = 8'd0;
+    #300; // un par de ciclos de reloj
+    srst = 0;
+
+    // Escritura de datos 0 a 9
+    repeat (10) begin
+        #100;
+      @(posedge clk_16MHz);
+      if (!full) begin
+        wr_en = 1;
+            #100;
+        din = din + 1;
+        $display("Escribiendo: %0d en tiempo %0t", din, $time);
+            #100;
+      end else begin
+        wr_en = 0;
+      end
+      @(posedge clk_16MHz);
+      wr_en = 0;
+    end
+    
+    // Pausa breve antes de empezar lectura
+    repeat (5) @(posedge clk_16MHz);
+    #300;
+    // Lectura de datos hasta que FIFO quede vacía
+    while (!empty) begin
+      rd_en = 1;
+          #100;
+      @(posedge clk_16MHz);
+      $display("Leyendo en tiempo %0t, valor: %0d", $time, dout);
+          #100;
+      rd_en = 0;
+    end
+    #100;
+    $finish;
+  end
+
+endmodule
+```
+
+Los resultados de la simulación se pueden visualizar en la siguiente imagen
+![Testbench UART](https://github.com/KRSahalie/Laboratorio3-TDD/blob/main/Ejercicio%201/Imagenes/TB1.1.png)
+
+Como se observa en el testbench, cada dato de salida corresponde a su respectiva entrada, manteniendo el orden en que fueron ingresados (First In, First Out). Esto demuestra que la FIFO funciona correctamente, conservando la integridad y secuencia de los datos.
+
 # Ejercicio 2: Interfaz UART
 
 La solución al ejercicio consiste en implementar una interfaz UART, dos registros de datos, un registro de control y una FSM que se encargue de la entrada y recepción de datos a parte de las propias de la interfaz.
